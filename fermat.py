@@ -19,12 +19,13 @@ def is_prime(n):
 		f +=6
 	return True   
 
+print 'fermat\'s factorization of N'
+print 'N = a^2 - b^2 = (a+b)(a-b) if N is odd or 4|N'
 N = input('N = ')
 for a in range (int(math.sqrt(N)+1), N):
 	b = math.pow(a,2) - N
 	b_root = isSquare(b)
 	if b_root:
-		print(a,b_root,a+b_root, a-b_root)
-		print((a+b_root)*(a-b_root))
-		print(is_prime(a+b_root), is_prime(a-b_root))
+		print 'a, b, a+b, a-b'
+		print(a,b_root,a+b_root,a-b_root)
 		exit()
