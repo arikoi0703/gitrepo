@@ -3,6 +3,7 @@ import random
 
 print 'get two prime numbers p, q'
 print 'N = pq, r = (p-1)(q-1)'
+print 'e is coprime with r, and ed % N = 1'
 
 def gcd(a, b):
 	while b != 0:
@@ -33,7 +34,7 @@ print 'p, q, N, r, e, d'
 print p, q, N, r, e, d
 
 p = input('plain text = ')
-c = math.pow(p, e) % N
-print c
-p_ = math.pow(c, d) % N
-print p_
+#math.pow() will make lots of 0, like 1.2345e+100, but operator ** won't
+c = p**e % N
+p_ = c**d % N
+print c, p_
