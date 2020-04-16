@@ -1,0 +1,78 @@
+import math
+import random
+
+class KMeans():
+	def __init__(self, dataSet, dimension, size, num_cluster):
+		self.__centroid = [0] * num_cluster
+		self.__cluster = [0] * size
+		self.__dataSet = dataSet
+		self.__dimension = dimension
+		self.__size = size
+		self.__num_cluster = num_cluster
+		
+	def run(self, num_iter):
+		self.random_assign()
+		for i in range(num_iter):
+			self.update()
+			self.assign()
+			self.compute_sse()
+		print(self.__cluster)
+
+	def assign(self):		
+		for i in range(self.__size):
+			temp_cluster = 0
+			dist = self.compute_distance(self.__dataSet[i], self.__centroid[0])
+			for j in range(1, self.__num_cluster):
+				new_dist = self.compute_distance(self.__dataSet[i], self.__centroid[j])
+				if new_dist < dist:
+					temp_cluster = j
+			self.__cluster[i] = temp_cluster
+
+	def update(self):
+		self.check_empty_set()
+		self.compute_centroid()
+
+	def random_assign(self):
+		for i in range(self.__size):
+			self.__cluster[i] = random.randrange(self.__num_cluster)
+
+	def check_empty_set(self):
+		count = []
+		for i in range(self.__num_cluster):
+			count.append(0)
+		for i in range(self.__size):
+			count[self.__cluster[i]] = count[self.__cluster[i]] + 1
+		for i in range(self.__num_cluster):
+			if count[i] == 0:
+				self.__cluster[random.randrange(self.__size)] = i
+		print(count)
+
+	def compute_centroid(self):
+		summation = []
+		for i in range(self.__num_cluster):
+			summation.append([0]*self.__dimension)
+		count = [0] * self.__num_cluster
+		for i in range(self.__size):
+			cluster_no = self.__cluster[i]
+			for j in range(self.__dimension):
+				summation[ cluster_no ][j] = summation[ cluster_no ][j] + float(self.__dataSet[i][j])
+			count[ cluster_no ] = count[ cluster_no ] + 1
+		for i in range(self.__num_cluster):
+			for j in range(self.__dimension):
+				summation[i][j] = summation[i][j] / count[i]
+			self.__centroid[i] = summation[i]
+
+	def compute_distance(self, point, center):
+		distance = 0
+		for i in range(self.__dimension):
+			distance = distance + math.pow(float(point[i])-float(center[i]), 2)
+		return distance
+
+	def compute_sse(self):
+		sse = 0
+		for i in range(self.__size):
+			sse = sse + self.compute_distance(self.__dataSet[i], self.__centroid[self.__cluster[i]])
+		print(sse)
+		return sse
+
+
