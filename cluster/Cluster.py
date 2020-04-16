@@ -31,39 +31,9 @@ class KMeans():
 					dist = new_dist
 					temp_cluster = j
 			self.__cluster[i] = temp_cluster
-
+			
 	def update(self):
 		self.check_empty_set()
-		self.compute_centroid()
-	
-	def random_assign(self):
-		for i in range(self.__size):
-			self.__cluster[i] = random.randrange(self.__num_cluster)
-
-	def check_empty_set(self):
-		count = []
-		for i in range(self.__num_cluster):
-			count.append(0)
-		for i in range(self.__size):
-			count[self.__cluster[i]] = count[self.__cluster[i]] + 1
-		for i in range(self.__num_cluster):
-			if count[i] == 0:
-				self.__cluster[random.randrange(self.__size)] = i
-		print(max(count), min(count), max(count)>min(count))
-		if(max(count) > min(count)*2):
-			print('========reassign========')
-			max_cluster = count.index(max(count))
-			min_cluster = count.index(min(count))
-			for i in range(self.__size):
-				if self.__cluster[i] == max_cluster:
-					self.__cluster[i] = min_cluster
-					count[min_cluster] = count[min_cluster] + 1
-					count[max_cluster] = count[max_cluster] - 1
-				if count[min_cluster] >= count[max_cluster]:
-					print(count)
-					break
-
-	def compute_centroid(self):
 		summation = []
 		for i in range(self.__num_cluster):
 			summation.append([0]*self.__dimension)
@@ -79,7 +49,29 @@ class KMeans():
 			for j in range(self.__dimension):
 				summation[i][j] = summation[i][j] / count[i]
 			self.__centroid[i] = summation[i]
-		
+			
+	def random_assign(self):
+		for i in range(self.__size):
+			self.__cluster[i] = random.randrange(self.__num_cluster)
+
+	def check_empty_set(self):
+		count = []
+		for i in range(self.__num_cluster):
+			count.append(0)
+		for i in range(self.__size):
+			count[self.__cluster[i]] = count[self.__cluster[i]] + 1
+		if(max(count) > min(count)*2):
+			print('========reassign========')
+			max_cluster = count.index(max(count))
+			min_cluster = count.index(min(count))
+			for i in range(self.__size):
+				if self.__cluster[i] == max_cluster:
+					self.__cluster[i] = min_cluster
+					count[min_cluster] = count[min_cluster] + 1
+					count[max_cluster] = count[max_cluster] - 1
+				if count[min_cluster] >= count[max_cluster]:
+					print(count)
+					break		
 
 	def compute_distance(self, point, center):
 		distance = 0
