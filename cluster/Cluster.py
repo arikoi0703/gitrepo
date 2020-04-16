@@ -12,9 +12,12 @@ class KMeans():
 		
 	def run(self, num_iter):
 		self.random_assign()
-		for i in range(num_iter):
-			self.update()
+		print(self.__cluster)
+		self.update()
+		self.compute_sse()
+		for i in range(1, num_iter):
 			self.assign()
+			self.update()
 			self.compute_sse()
 		print(self.__cluster)
 
@@ -25,13 +28,14 @@ class KMeans():
 			for j in range(1, self.__num_cluster):
 				new_dist = self.compute_distance(self.__dataSet[i], self.__centroid[j])
 				if new_dist < dist:
+					dist = new_dist
 					temp_cluster = j
 			self.__cluster[i] = temp_cluster
 
 	def update(self):
 		self.check_empty_set()
 		self.compute_centroid()
-
+	
 	def random_assign(self):
 		for i in range(self.__size):
 			self.__cluster[i] = random.randrange(self.__num_cluster)
@@ -45,7 +49,19 @@ class KMeans():
 		for i in range(self.__num_cluster):
 			if count[i] == 0:
 				self.__cluster[random.randrange(self.__size)] = i
-		print(count)
+		print(max(count), min(count), max(count)>min(count))
+		if(max(count) > min(count)*2):
+			print('========reassign========')
+			max_cluster = count.index(max(count))
+			min_cluster = count.index(min(count))
+			for i in range(self.__size):
+				if self.__cluster[i] == max_cluster:
+					self.__cluster[i] = min_cluster
+					count[min_cluster] = count[min_cluster] + 1
+					count[max_cluster] = count[max_cluster] - 1
+				if count[min_cluster] >= count[max_cluster]:
+					print(count)
+					break
 
 	def compute_centroid(self):
 		summation = []
@@ -57,10 +73,13 @@ class KMeans():
 			for j in range(self.__dimension):
 				summation[ cluster_no ][j] = summation[ cluster_no ][j] + float(self.__dataSet[i][j])
 			count[ cluster_no ] = count[ cluster_no ] + 1
+		print('comp_center: ', count)
 		for i in range(self.__num_cluster):
+			count[i] = 1 if count[i] == 0 else count[i]
 			for j in range(self.__dimension):
 				summation[i][j] = summation[i][j] / count[i]
 			self.__centroid[i] = summation[i]
+		
 
 	def compute_distance(self, point, center):
 		distance = 0
