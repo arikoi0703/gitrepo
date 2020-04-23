@@ -9,10 +9,10 @@ class KMeans():
 		self.__dimension = dimension
 		self.__size = size
 		self.__num_cluster = num_cluster
+		print(len(dataSet))
 		
 	def run(self, num_iter):
 		self.random_assign()
-		print(self.__cluster)
 		self.update()
 		self.compute_sse()
 		for i in range(1, num_iter):
@@ -60,8 +60,10 @@ class KMeans():
 			count.append(0)
 		for i in range(self.__size):
 			count[self.__cluster[i]] = count[self.__cluster[i]] + 1
-		if(max(count) > min(count)*2):
-			print('========reassign========')
+		if min(count) == 0:
+			self.__cluster[random.randrange(self.__size)] = count.index(min(count))
+	def balance(self):
+		if max(count) > min(count)*2:
 			max_cluster = count.index(max(count))
 			min_cluster = count.index(min(count))
 			for i in range(self.__size):
@@ -70,7 +72,6 @@ class KMeans():
 					count[min_cluster] = count[min_cluster] + 1
 					count[max_cluster] = count[max_cluster] - 1
 				if count[min_cluster] >= count[max_cluster]:
-					print(count)
 					break		
 
 	def compute_distance(self, point, center):
