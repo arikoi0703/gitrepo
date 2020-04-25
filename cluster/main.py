@@ -24,27 +24,28 @@ for lines in fp:
 	line.pop()
 	dataSet.append(line)
 
-sse_km = []
 #run 30 times
 #begin by random assign
-
+sse_km = []
 km = Cluster.KMeans(dataSet, dimension, size, num_cluster) 
 for i in range(run_times):
-	sse_km.append( km.run(iterator) )
+	km.run(iterator)
+	sse_km.append( km.get_sse() )
 
 #begin by clustering with definer
 #define an interval [a, b, c, ...]
 # x < a : x = 0, 
 # a < x < b : x = 1, ...
 definerSet = [[5, 6],[2.8, 3.5],[2, 5],[1, 1.5]]
-sse_with_definer = []
-km_with_definer = Cluster.KMeans(dataSet, dimension, size, num_cluster)
+sse_definer = []
+km_definer = Cluster.KMeans(dataSet, dimension, size, num_cluster)
 for i in range(run_times):
-	sse_with_definer.append(km_with_definer.run_with_definer(iterator, definerSet)) 
+	km_definer.run(iterator, definerSet)
+	sse_definer.append( km_definer.get_sse() ) 
 
 for i in range(run_times):
 	print(sse_km[i])
 
 for i in range(run_times):
-	print(sse_with_definer[i])
+	print(sse_definer[i])
 

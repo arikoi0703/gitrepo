@@ -11,12 +11,13 @@ class KMeans():
 		self.__num_cluster = num_cluster
 		self.__sse = []
 
-	def run_init(self):
-		self.__sse = []	
+	def init_run(self):
+		self.__sse = []
 	
-	def run(self, num_iter):
-		self.run_init()
-		self.random_assign()
+	def run(self, num_iter, definer=[]):
+		self.init_run()
+		self.init_assign(definer, self.__num_cluster)
+		#print(self.__cluster)
 		self.update()
 		self.compute_sse()
 		for i in range(1, num_iter):
@@ -24,20 +25,12 @@ class KMeans():
 			self.update()
 			self.compute_sse()
 		#print(self.__cluster)
-		return self.__sse
 
-	def run_with_definer(self, num_iter, definer=[]):
-		self.run_init()
-		self.assign_with_definer(definer, self.__num_cluster)
-		#print(self.__cluster)
-		self.update()
-		self.compute_sse()
-		for i in range(1, num_iter):
-			self.assign()
-			self.update()
-			self.compute_sse()
-		#print(self.__cluster)
+	def get_sse(self):
 		return self.__sse
+	
+	def get_cluster(self):
+		return self.__cluster
 
 	def assign(self):		
 		for i in range(self.__size):
@@ -67,19 +60,17 @@ class KMeans():
 			for j in range(self.__dimension):
 				summation[i][j] = summation[i][j] / count[i]
 			self.__centroid[i] = summation[i]
-			
-	def random_assign(self):
-		for i in range(self.__size):
-			self.__cluster[i] = random.randrange(self.__num_cluster)
-
+	
+	#random assign if definer is not defined
 	#definer = [ [], [], [], ... ]
 	#it's good if every definer[] has the same len()
-	def assign_with_definer(self, definer=[], definer_cluster=1):
-		definer_range = len(definer) * len(definer[0])
-		sep = definer_range / definer_cluster
+	def init_assign(self, definer=[], definer_cluster=1):
 		if definer == []:
-			self.random_assign()
+			for i in range(self.__size):
+				self.__cluster[i] = random.randrange(self.__num_cluster)
 		else:
+			definer_range = len(definer) * len(definer[0])
+			sep = definer_range / definer_cluster
 			for i in range(self.__size):
 				c = 0
 				for j in range(self.__dimension):
@@ -102,6 +93,8 @@ class KMeans():
 			count[self.__cluster[i]] = count[self.__cluster[i]] + 1
 		if min(count) == 0:
 			self.__cluster[random.randrange(self.__size)] = count.index(min(count))
+	
+	#not use, make the num of each cluster more balance
 	def balance(self):
 		if max(count) > min(count)*2:
 			max_cluster = count.index(max(count))

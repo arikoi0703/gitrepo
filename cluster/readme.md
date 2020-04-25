@@ -22,10 +22,6 @@ Cluser.py
 ```
 import Cluster.py
 km = Cluster.KMeans(dataSet, dimension, size, num_cluster)
-
-sse = km.run(iterator)  
-//the times you want to run clustering function, return a list that store the sse when a cluster decided
-
 definerSet = [ [a,b,c], [d,e,f], ... ]  
 //in Cluster, this will decide the first cluster
 //calculate the weight by the interval[a,b]
@@ -33,8 +29,13 @@ definerSet = [ [a,b,c], [d,e,f], ... ]
 //w = 1, a < x < b
 //w = 2, b < x < c, ...
 
-sse = km.run_with_definer(iteratpr, definerSet)
-//return the list of sse like km.run(iterator)
+#if not set definer set, the initial cluster will be assign randomly 
+km.run(iterator)
+km.run(iterator, definerSet)
+
+#to get the sse and cluster result after run
+sse = km.get_sse()  
+cluster = km.get_cluster()
 ```
 
 run directly
