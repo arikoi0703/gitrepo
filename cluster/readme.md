@@ -1,5 +1,12 @@
 # CLUSTERING by python3.7
 
+iris.data is from here [iris.data](http://archive.ics.uci.edu/ml/datasets/iris)
+
+## ENVIROMENT
+- python 3.7.3
+- R version 3.6.3 (2020-02-29)
+
+## INTRODUCTION
 implement k-means in two modes:
 - random assign
 - assign by definer
@@ -15,6 +22,7 @@ Cluser.py
 ```
 import Cluster.py
 km = Cluster.KMeans(dataSet, dimension, size, num_cluster)
+
 sse = km.run(iterator)  
 //the times you want to run clustering function, return a list that store the sse when a cluster decided
 
@@ -24,6 +32,7 @@ definerSet = [ [a,b,c], [d,e,f], ... ]
 //w = 0, x < a
 //w = 1, a < x < b
 //w = 2, b < x < c, ...
+
 sse = km.run_with_definer(iteratpr, definerSet)
 //return the list of sse like km.run(iterator)
 ```
