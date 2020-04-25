@@ -11,11 +11,30 @@ output: sse/run ( at the end output all once )
 run R script to plot the graph each mode, out, x-axis = iterator, y-axis = sse
 output iris_random_assign.jpeg and iris_with_definer.jpeg
 
-```bash
+Cluser.py
+```
+import Cluster.py
+km = Cluster.KMeans(dataSet, dimension, size, num_cluster)
+sse = km.run(iterator)  
+//the times you want to run clustering function, return a list that store the sse when a cluster decided
+
+definerSet = [ [a,b,c], [d,e,f], ... ]  
+//in Cluster, this will decide the first cluster
+//calculate the weight by the interval[a,b]
+//w = 0, x < a
+//w = 1, a < x < b
+//w = 2, b < x < c, ...
+sse = km.run_with_definer(iteratpr, definerSet)
+//return the list of sse like km.run(iterator)
+```
+
+run directly
+```shell
+$make iris 
 //default run, cluster_num=3, iterator=20
-$make iris
-//run
+
 $python3 main.py filename dimension size cluster_num iteraror
+
+$rscript rPlot.rs 
 //plot graph
-$rscript rPlot.rs
 ```
