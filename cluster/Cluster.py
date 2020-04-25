@@ -9,9 +9,13 @@ class KMeans():
 		self.__dimension = dimension
 		self.__size = size
 		self.__num_cluster = num_cluster
-		print(len(dataSet))
-		
+		self.__sse = []
+
+	def run_init(self):
+		self.__sse = []	
+	
 	def run(self, num_iter):
+		self.run_init()
 		self.random_assign()
 		self.update()
 		self.compute_sse()
@@ -19,7 +23,20 @@ class KMeans():
 			self.assign()
 			self.update()
 			self.compute_sse()
-		print(self.__cluster)
+		#print(self.__cluster)
+		return self.__sse
+
+	def run_with_definer(self, num_iter, definer=[]):
+		self.run_init()
+		self.assign_with_definer(definer)
+		self.update()
+		self.compute_sse()
+		for i in range(1, num_iter):
+			self.assign()
+			self.update()
+			self.compute_sse()
+		#print(self.__cluster)
+		return self.__sse
 
 	def assign(self):		
 		for i in range(self.__size):
@@ -43,7 +60,7 @@ class KMeans():
 			for j in range(self.__dimension):
 				summation[ cluster_no ][j] = summation[ cluster_no ][j] + float(self.__dataSet[i][j])
 			count[ cluster_no ] = count[ cluster_no ] + 1
-		print('comp_center: ', count)
+		#print('comp_center: ', count)
 		for i in range(self.__num_cluster):
 			count[i] = 1 if count[i] == 0 else count[i]
 			for j in range(self.__dimension):
@@ -53,6 +70,28 @@ class KMeans():
 	def random_assign(self):
 		for i in range(self.__size):
 			self.__cluster[i] = random.randrange(self.__num_cluster)
+
+	#definer = [ [], [], [], ... ]
+	#it's good if every definer[] has the same len()
+	def assign_with_definer(self, definer=[], definer_cluster=1):
+		definer_range = len(definer) * len(definer[0])
+		sep = definer_range / definer_cluster
+		if definer == []:
+			self.random_assign()
+		else:
+			for i in range(self.__size):
+				c = 0
+				for j in range(self.__dimension):
+					isSet = False
+					for k in range(len(definer[j])):
+						if float(self.__dataSet[i][j]) < definer[j][k]:
+							c = c + k; isSet = (not isSet); break;
+					if not isSet:
+						c = c + k
+				self.__cluster[i] = definer_cluster - 1
+				for j in range(definer_cluster):
+					if c < (sep + sep*j):
+						self.__cluster[i] = j; break;
 
 	def check_empty_set(self):
 		count = []
@@ -84,7 +123,5 @@ class KMeans():
 		sse = 0
 		for i in range(self.__size):
 			sse = sse + self.compute_distance(self.__dataSet[i], self.__centroid[self.__cluster[i]])
-		print(sse)
-		return sse
-
-
+		self.__sse.append(sse)
+		
