@@ -28,7 +28,8 @@ class KMeans():
 
 	def run_with_definer(self, num_iter, definer=[]):
 		self.run_init()
-		self.assign_with_definer(definer)
+		self.assign_with_definer(definer, self.__num_cluster)
+		#print(self.__cluster)
 		self.update()
 		self.compute_sse()
 		for i in range(1, num_iter):
@@ -87,7 +88,7 @@ class KMeans():
 						if float(self.__dataSet[i][j]) < definer[j][k]:
 							c = c + k; isSet = (not isSet); break;
 					if not isSet:
-						c = c + k
+						c = c + k + 1
 				self.__cluster[i] = definer_cluster - 1
 				for j in range(definer_cluster):
 					if c < (sep + sep*j):

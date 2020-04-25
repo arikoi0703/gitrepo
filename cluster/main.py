@@ -36,12 +36,11 @@ for i in range(run_times):
 #define an interval [a, b, c, ...]
 # x < a : x = 0, 
 # a < x < b : x = 1, ...
-definerSet = [[5, 6],[3, 3.5],[2, 5],[1, 1.5]]
+definerSet = [[5, 6],[2.8, 3.5],[2, 5],[1, 1.5]]
 sse_with_definer = []
 km_with_definer = Cluster.KMeans(dataSet, dimension, size, num_cluster)
 for i in range(run_times):
 	sse_with_definer.append(km_with_definer.run_with_definer(iterator, definerSet)) 
-
 
 for i in range(run_times):
 	print(sse_km[i])
