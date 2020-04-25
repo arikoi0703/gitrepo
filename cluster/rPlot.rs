@@ -2,7 +2,7 @@ data = read.csv(file="./result/result.csv", header=FALSE, sep=",")
 x = (1:dim(data)[2])
 size = dim(data)[1]/2
 
-jpeg("random_assign.jpeg")
+jpeg("assign_random.jpeg")
 color = rainbow(size)
 plot(0,0,xlab="iterator",ylab="sse",xlim=c(1,max(x)),ylim=c(min(data),max(data)),type="n")
 for ( i in 1:size ){
@@ -10,7 +10,7 @@ for ( i in 1:size ){
 }
 dev.off()
 
-jpeg("definer_assign.jpeg")
+jpeg("assign_definer.jpeg")
 color = rainbow(size)
 plot(0,0,xlab="iterator",ylab="sse",xlim=c(1,max(x)),ylim=c(min(data),max(data)),type="n")
 for ( i in size+1:dim(data)[1] ){
