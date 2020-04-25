@@ -1,0 +1,58 @@
+#!/bin/bash
+#softlink /usr/local/bin 
+
+#default
+min=60
+time=1
+#remember no space in path, may error, not resolve
+music="${HOME}/Documents/ringtone/everlasting_song.m4r"
+isExec=1
+failcmd='echo "argument error: missing or file not exist"; timer -h; isExec=0; break'
+
+#read argument from command line
+re_num="^[0-9]+$"
+args=("$@")
+for ((i=0; i<$#; i++))
+do
+	if [ ${args[$i]} == "-h" ]; then
+		echo "timer, version 1.0
+created by arikoi, 2020
+
+notice:
+do not check if the music file can play or not
+
+usage: timer [-t time] [-a audio_path]
+
+  t : read a time as minute
+  a : set the audio as ringtone to play when time is up
+"
+		isExec=0; break
+	elif [ ${args[$i]} == "-t" ]; then
+		((i++))
+		if [[ ${args[$i]} =~ $re_num ]]; then
+			time=${args[$i]}
+		else
+			eval $failcmd
+		fi
+	elif [ ${args[$i]} == "-a" ]; then
+		((i++))
+		test ${args[$i]} && test -e ${args[$i]} && music=${args[$i]} || eval $failcmd
+	fi
+done
+
+if [ $isExec -eq 1 ]; then
+	sleep $((time*min))
+	afplay -t 5 ${music}
+fi
+
+
+#UI, for no argv and test
+#multi-line comment
+<<COMMENT
+while true
+do
+#read -p "enter a time (minutes): " time
+sleep $((time*min))
+afplay -t 5 ~/Documents/ringtone/everlasting_song.m4r
+done
+COMMENT
