@@ -43,9 +43,20 @@ for i in range(run_times):
 	km_definer.run(iterator, definerSet)
 	sse_definer.append( km_definer.get_sse() ) 
 
+#bad definer
+definerSet = [[1, 8],[2, 3],[4, 5],[1, 2]]
+sse_bad_definer = []
+km_definer = Cluster.KMeans(dataSet, dimension, size, num_cluster)
+for i in range(run_times):
+	km_definer.run(iterator, definerSet)
+	sse_bad_definer.append( km_definer.get_sse() ) 
+
 for i in range(run_times):
 	print(sse_km[i])
 
 for i in range(run_times):
 	print(sse_definer[i])
+
+for i in range(run_times):
+	print(sse_bad_definer[i])
 

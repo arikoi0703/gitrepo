@@ -17,6 +17,7 @@ class KMeans():
 	def run(self, num_iter, definer=[]):
 		self.init_run()
 		self.init_assign(definer, self.__num_cluster)
+		print(self.__cluster)
 		#print(self.__cluster)
 		self.update()
 		self.compute_sse()
@@ -118,4 +119,13 @@ class KMeans():
 		for i in range(self.__size):
 			sse = sse + self.compute_distance(self.__dataSet[i], self.__centroid[self.__cluster[i]])
 		self.__sse.append(sse)
-		
+'''		
+	def determine_cluster(self, clusterSet):
+		size = len(clusterSet)
+		match = 0
+		if self.__size != size:
+			print("set size not match!")
+		else:
+			for i in range(clusterSet):
+				if self.__cluster[i] == 
+'''
