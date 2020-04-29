@@ -18,7 +18,6 @@ class KMeans():
 		self.init_run()
 		self.init_assign(definer, self.__num_cluster)
 		print(self.__cluster)
-		#print(self.__cluster)
 		self.update()
 		self.compute_sse()
 		for i in range(1, num_iter):
