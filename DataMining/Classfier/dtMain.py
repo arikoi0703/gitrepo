@@ -18,5 +18,8 @@ dt = DT.DecisionTree(trainSet)
 dt.setTree()
 print('end set tree')
 result = dt.predictTree(testSet)
-print(result)
+
+outFile = open('result/dt', 'w')
+outFile.write(result)
+outFile.close()
 

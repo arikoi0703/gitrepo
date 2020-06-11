@@ -25,7 +25,7 @@ class DecisionTree():
 			self.tree[key] = count.index(max(count))
 			return True
 		attr = sorted(tSet, key=lambda item: item[attrIdx])
-		maxEntropy = 0
+		maxEntropy = -1
 		eValue = 0	#the value to get the max entropy
 		preValue = -1
 		for i in attr:
@@ -45,9 +45,9 @@ class DecisionTree():
 		self.tree[key] = eValue
 		left = [ d for d in tSet if float(d[attrIdx]) < eValue ]
 		right = [ d for d in tSet if float(d[attrIdx]) >= eValue ]
-		resL = self.setTree(left, key*2, attrIdx+1)
-		resR = self.setTree(right, key*2+1, attrIdx+1)
-		return (resL and resR)
+		self.setTree(left, key*2, attrIdx+1)
+		self.setTree(right, key*2+1, attrIdx+1)
+		return True
 
 	#[group 0, group 1]	
 	def getEntropy(self, setOri, setL, setR):

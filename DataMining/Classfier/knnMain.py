@@ -1,4 +1,4 @@
-from Classifier import KNNthread
+from Classifier import KNN
 from datetime import datetime
 import sys
 
@@ -26,7 +26,7 @@ trainSet = [line.split(',') for line in train if line != '']
 runS = datetime.now()
 print(outFile, runS)
 
-knn = KNNthread.KNN(trainSet)
+knn = KNN.KNN(trainSet)
 result = knn.run(testSet=testSet, k=k, threadNum=thread)
 runE = datetime.now()
 
