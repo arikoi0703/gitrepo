@@ -4,6 +4,7 @@ import sys
 
 testFile = 'NSL-KDDTest+.txt'
 trainFile = 'NSL-KDDTrain+.txt'
+
 path = 'result/'
 
 try:
@@ -11,10 +12,13 @@ try:
 	k = int(sys.argv[flag])
 	flag = 2
 	thread = int(sys.argv[flag])
+	flag = 3
+	testFile = sys.argv[flag]
 except:
 	if flag == 1:
 		k = int(input('k:'))
 	thread = int(input('thread:'))
+
 
 outFile = 'knn_' + str(k) + '_' + str(thread)
 out = open(path+outFile, 'w')

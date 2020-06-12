@@ -85,9 +85,9 @@ class KNN():
 			result = [str(counter.index(max(counter))), data_no]
 			q_group.put(result)
 
-	def compute_distance(self, testData, trainData):
+	def compute_distance(self, data1, data2):
 		dist = 0
-		for i,j in zip(testData, trainData):
+		for i,j in zip(data1, data2):
 			dist += math.pow(float(i)-float(j), 2)
 		return dist
 
