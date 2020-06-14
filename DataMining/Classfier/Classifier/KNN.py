@@ -4,16 +4,16 @@ import threading
 import math
 
 class KNN():
-	def __init__(self, trainSet):
+	def __init__(self, trainSet=[]):
 		self.trainSet = trainSet
-
-	def run(self, testSet=[], k=3, threadNum=0):
+		
+	def run(self,trainSet=[], testSet=[], k=3, threadNum=0):
 		self.k = k
 		self.thread = threadNum
 		result = ''
 		if self.thread == 0:
 			for testData in testSet:
-				result += self.knn_group(testData)
+				result += self.get_group(testData)
 		else:
 			threadlist = []
 			q_group = Queue()
@@ -23,7 +23,7 @@ class KNN():
 				testSet[no].append(no)
 			for i in range(threadNum):
 				threadlist.append(threading.Thread( \
-								target=self.knn_group_t, \
+								target=self.get_group_t, \
 								args=(self.trainSet, testSet[i*part:(i+1)*part], q_group, )
 								))
 				threadlist[i].start()
@@ -31,7 +31,7 @@ class KNN():
 			#process the remain data here
 			for i in range(threadNum*part, len(testSet)):
 				seq_no = testSet[i][-1]
-				group = knn_group(testSet[i][:-1])
+				group = get_group(testSet[i][:-1])
 				q_group.put([group, seq_no])
 			for i in range(threadNum):
 				threadlist[i].join()
@@ -42,13 +42,13 @@ class KNN():
 			for r in result_list:
 				result += r[0]
 		return result	
-
-	def knn_group(self, testData):
+	
+	def get_group(self, testData):
 		k_group = []
 		k_dist = []
 		dist = 0
 		for trainData in self.trainSet:
-			dist = self.compute_distance(testData, trainData)
+			dist = compute_distance(testData, trainData)
 			if len(k_dist) < self.k:
 				k_group.append(trainData[-1])
 				k_dist.append(dist)
@@ -62,8 +62,8 @@ class KNN():
 			counter[int(i)] += 1
 		result = str(counter.index(max(counter)))
 		return result
-
-	def knn_group_t(self, trainSet, testSet, q_group):
+	
+	def get_group_t(self, trainSet, testSet, q_group):
 		for data in testSet:
 			data_no = data[-1]
 			testData = data[:-1]
@@ -71,7 +71,7 @@ class KNN():
 			k_dist = []
 			dist = 0
 			for trainData in trainSet:
-				dist = self.compute_distance(testData, trainData)
+				dist = compute_distance(testData, trainData)
 				if len(k_dist) < self.k:
 					k_group.append(trainData[-1])
 					k_dist.append(dist)
@@ -85,12 +85,25 @@ class KNN():
 			result = [str(counter.index(max(counter))), data_no]
 			q_group.put(result)
 
-	def compute_distance(self, data1, data2):
+	def get_k_groups(self, testData=[], k=3):
+		k_group = []
 		dist = 0
-		for i,j in zip(data1, data2):
+		for trainData in self.trainSet:
+			dist = compute_distance(testData, trainData)
+			if len(k_group) < k or k == -1:
+				k_group.append([dist, trainData[-1]])
+			elif dist < max(k_group)[0]:
+				idx = k_group.index(max(k_group))
+				k_group[idx] = [dist, trainData[-1]]
+		k_group = sorted(k_group, key=lambda item:item[0])
+		k_group = [ k_group[i][1] for i in range(len(k_group)) ]
+		return k_group
+
+def compute_distance(data1, data2):
+	dist = 0
+	for i,j in zip(data1, data2):
+		if i != j:
 			dist += math.pow(float(i)-float(j), 2)
-		return dist
-
-
+	return dist
 
 

@@ -65,8 +65,6 @@ class DecisionTree():
 			print('data size error')
 			return result
 		keySet = self.tree.keys()
-		print(self.tree)
-		print(keySet)
 		for data in testSet:
 			key = 1
 			for attr in data:
