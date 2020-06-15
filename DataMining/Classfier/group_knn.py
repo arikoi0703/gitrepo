@@ -22,7 +22,7 @@ except:
 		part_no = int(input('part_no:'))
 
 
-outFile = 'knn_group_' + str(k) + '_' + str(part_no)
+outFile = 'group_' + str(part_no)
 out = open(path+outFile, 'w')
 test = open(testFile, 'r').read().split('\n')
 train = open(trainFile, 'r').read().split('\n')
@@ -38,7 +38,7 @@ result = []
 #get the group sorted by distance of every test data
 for testData in testSet:
 	result = knn.get_k_groups(testData, k)
-	out.write(str(result)+'\n')
+	out.write(str(result)[2:-2].replace("', '", "")+'\n')
 
 out.close()
 

@@ -12,8 +12,8 @@ do
 	fi	
 done
 
-python3 rawData/getGroup.py $k rawData/part_0 | tr -d '\n' > $k
-python3 rawData/getGroup.py $k rawData/part_1 | tr -d '\n' >> $k
-python3 rawData/getGroup.py $k rawData/part_2 | tr -d '\n' >> $k
-python3 rawData/getGroup.py $k rawData/part_3 | tr -d '\n' >> $k 
+python3 rawData/getGroup.py $k rawData/part_0 | tr -d '\n' > ./knn_result/$k
+python3 rawData/getGroup.py $k rawData/part_1 | tr -d '\n' >> ./knn_result/$k
+python3 rawData/getGroup.py $k rawData/part_2 | tr -d '\n' >> ./knn_result/$k
+python3 rawData/getGroup.py $k rawData/part_3 | tr -d '\n' >> ./knn_result/$k 
 
