@@ -1,6 +1,6 @@
 import sys
 
-answer = open('../answer', 'r').readline()
+answer = open('answer', 'r').readline()
 
 total = len(answer)
 print('k,error,accuracy')
