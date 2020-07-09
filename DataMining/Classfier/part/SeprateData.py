@@ -5,7 +5,7 @@ try:
 except:
 	part = int( input('part: ') )
 
-f = open('../NSL-KDDTest+.txt', 'r').read().split('\n')
+f = open('../DataSet/NSL-KDDTest+.txt', 'r').read().split('\n')
 
 size = int( len(f)/part )
 
